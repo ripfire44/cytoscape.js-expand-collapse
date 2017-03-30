@@ -161,7 +161,17 @@ module.exports = function (params, cy, api, $) {
           ctx.fillStyle = "black";
           ctx.strokeStyle = "black";
 
-          ctx.ellipse(expandcollapseCenterX, expandcollapseCenterY, rectSize / 2, rectSize / 2, 0, 0, 2 * Math.PI);
+          var halfRect = rectSize / 2;
+
+          if (ctx.ellipse) {
+            ctx.ellipse(expandcollapseCenterX, expandcollapseCenterY, halfRect, halfRect, 0, 0, 2 * Math.PI);
+          } else {
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(expandcollapseStartX + halfRect, expandcollapseStartY + halfRect, halfRect, 0, 2 * Math.PI, false);
+            ctx.restore();
+          }
+          
           ctx.fill();
 
           ctx.beginPath();
