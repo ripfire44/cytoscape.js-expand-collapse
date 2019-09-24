@@ -4,9 +4,17 @@ cytoscape-expand-collapse
 
 ## Description
 
-This extension provides an interface to expand/collapse nodes for better management of complexity of Cytoscape.js compound graphs, distributed under [The MIT License](https://opensource.org/licenses/MIT). When using this extension, please cite the following paper, on which the ideas are based on:
+This extension provides an interface to expand/collapse nodes for better management of complexity of Cytoscape.js compound graphs, distributed under [The MIT License](https://opensource.org/licenses/MIT). 
 
-U. Dogrusoz and B. Genc, "A Multi-Graph Approach to Complexity Management in Interactive Graph Visualization", Computers & Graphics, 30(1), pp. 86-97, 2006.
+![](https://github.com/iVis-at-Bilkent/cytoscape.js-expand-collapse/blob/master/expand-collapse-extension-demo.gif)
+
+Please cite the following paper when using this extension:
+
+U. Dogrusoz , A. Karacelik, I. Safarli, H. Balci, L. Dervishi, and M.C. Siper, "[Efficient methods and readily customizable libraries for managing complexity of large networks](https://doi.org/10.1371/journal.pone.0197238)", PLoS ONE, 13(5): e0197238, 2018.
+
+## Demo
+
+Click [here](https://rawgit.com/iVis-at-Bilkent/cytoscape.js-expand-collapse/master/demo.html) (no undo) or [here](https://rawgit.com/iVis-at-Bilkent/cytoscape.js-expand-collapse/master/demo-undoable.html) (undoable) or [here](https://rawgit.com/iVis-at-Bilkent/cytoscape.js-expand-collapse/master/demo-compounds-collapsed.html) (compounds initially collapsed) for a demo.
 
 ## API
 
@@ -56,8 +64,21 @@ Resets the options to the given parameter.
 `api.setOption(name, value)`
 Sets the value of the option given by the name to the given value.
 
+`api.getCollapsedChildren(node)`
+Get the children of the given collapsed node which are removed during collapse operation
+
+`api.getCollapsedChildrenRecursively(node)`
+Get collapsed children recursively including nested collapsed children. Returned value includes edges and nodes, use selector to get edges or nodes.
+
+`api.getAllCollapsedChildrenRecursively()`
+Get collapsed children of all collapsed nodes recursively. Returned value includes edges and nodes, use selector to get edges or nodes.
+
+`api.clearVisualCue()`
+Forces the visual cue to be cleared. It is to be called in extreme cases.
 
 ## Events
+Notice that following events are performed for *each* node that is collapsed/expanded. Also, notice that any post-processing layout is performed *after* the event.
+
 `cy.nodes().on("expandcollapse.beforecollapse", function(event) { var node = this; ... })` Triggered before a node is collapsed
 
 `cy.nodes().on("expandcollapse.aftercollapse", function(event) { var node = this; ... })` Triggered after a node is collapsed
@@ -70,7 +91,8 @@ Sets the value of the option given by the name to the given value.
 ## Default Options
 ```javascript
     var options = {
-      layoutBy: null, // for rearrange after expand/collapse. It's just layout options or whole layout function. Choose your side!
+      layoutBy: null, // to rearrange after expand/collapse. It's just layout options or whole layout function. Choose your side!
+      // recommended usage: use cose-bilkent layout with randomize: false to preserve mental map upon expand/collapse
       fisheye: true, // whether to perform fisheye view after expand/collapse you can specify a function too
       animate: true, // whether to animate on drawing changes you can specify a function too
       ready: function () { }, // callback when expand/collapse initialized
@@ -132,8 +154,8 @@ expandCollapse( cytoscape, jquery ); // register extension
 
 AMD:
 ```js
-require(['cytoscape', 'cytoscape-expand-collapse'], function( cytoscape, expand-collapse ){
-  expand-collapse( cytoscape ); // register extension
+require(['cytoscape', 'cytoscape-expand-collapse'], function( cytoscape, expandCollapse ){
+  expandCollapse( cytoscape ); // register extension
 });
 ```
 
@@ -151,4 +173,8 @@ This project is set up to automatically be published to npm and bower.  To publi
 
 ## Team
 
-  * [Selim Firat Yilmaz](https://github.com/mrsfy), [Metin Can Siper](https://github.com/metincansiper), [Alper Karacelik](https://github.com/alperkaracelik), [Ugur Dogrusoz](https://github.com/ugurdogrusoz) of [i-Vis at Bilkent University](http://www.cs.bilkent.edu.tr/~ivis)
+  * [Ilkin Safarli](https://github.com/kinimesi), [Metin Can Siper](https://github.com/metincansiper), [Alper Karacelik](https://github.com/alperkaracelik),  [Ugur Dogrusoz](https://github.com/ugurdogrusoz) of [i-Vis at Bilkent University](http://www.cs.bilkent.edu.tr/~ivis)
+  
+## Alumni
+
+  * [Selim Firat Yilmaz](https://github.com/mrsfy)
